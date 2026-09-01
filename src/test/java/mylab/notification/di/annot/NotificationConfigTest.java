@@ -17,17 +17,24 @@ public class NotificationConfigTest {
 
     @Test
     public void notificationManagerTest() {
+
         assertNotNull(notificationManager);
 
-        assertNotNull(notificationManager.getEmailService());
-        assertEquals("smtp.gmail.com", notificationManager.getEmailService().getSmtpServer());
-        assertEquals(587,
-                notificationManager.getEmailService().getPort());
+        // 이메일 서비스 형변환
+        EmailNotificationService emailService = (EmailNotificationService)notificationManager.getEmailService();
 
-        assertNotNull(notificationManager.getSmsService());
-        assertEquals("SKT", notificationManager.getSmsService().getProvider());
+        assertNotNull(emailService);
+        assertEquals("smtp.gmail.com",emailService.getSmtpServer());
+        assertEquals(587, emailService.getPort());
+
+        // SMS 서비스 형변환
+        SmsNotificationService smsService = (SmsNotificationService)notificationManager.getSmsService();
+
+        assertNotNull(smsService);
+        assertEquals("SKT", smsService.getProvider());
 
         notificationManager.sendNotificationByEmail("테스트 이메일");
         notificationManager.sendNotificationBySms("테스트 SMS");
+    
     }
 }
